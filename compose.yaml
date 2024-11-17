@@ -1,0 +1,14 @@
+﻿services:
+  discord-always-on:
+    image: discord-always-on
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./appsettings.json:/app/appsettings.json
+#    environment:
+#      - "AlwaysOn:TOKEN="
+#      - "AlwaysOn:Activities=[]"
+#      - "AlwaysOn:Status=idle"
+#      - "AlwaysOn:Afk=true"
