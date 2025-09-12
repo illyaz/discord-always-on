@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordAlwaysOn", "DiscordAlwaysOn.csproj", "{53F68B50-DDE1-457D-86CE-D53559F4CD7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiscordAlwaysOn", "DiscordAlwaysOn\DiscordAlwaysOn.csproj", "{53F68B50-DDE1-457D-86CE-D53559F4CD7C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C74B2FD7-7840-46F3-AB63-29AC7B20943F}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
-		Dockerfile = Dockerfile
-		.dockerignore = .dockerignore
+		Dockerfile = DiscordAlwaysOn\Dockerfile
+		.dockerignore = DiscordAlwaysOn\.dockerignore
 		compose.yaml = compose.yaml
 		.gitignore = .gitignore
 	EndProjectSection

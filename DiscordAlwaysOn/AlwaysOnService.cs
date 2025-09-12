@@ -51,13 +51,13 @@ public class AlwaysOnService(
         }
 
         return result.MessageType == WebSocketMessageType.Close
-            ? default
-            : JsonSerializer.Deserialize<Payload>(receiveBuffer.WrittenSpan);
+            ? null
+            : JsonSerializer.Deserialize(receiveBuffer.WrittenSpan, PayloadSerializerContext.Default.Payload);
     }
 
     private ValueTask SendAsync(Payload payload, CancellationToken cancellationToken)
     {
-        var data = JsonSerializer.SerializeToUtf8Bytes(payload);
+        var data = JsonSerializer.SerializeToUtf8Bytes(payload, PayloadSerializerContext.Default.Payload);
 
         if (logger.IsEnabled(LogLevel.Debug))
             logger.LogDebug("Sending payload {Payload}", Encoding.UTF8.GetString(data));
@@ -88,7 +88,7 @@ public class AlwaysOnService(
                 if (await ReceiveAsync(token) is not { OpCode: OpCode.Hello, Data: { } helloData })
                     throw new InvalidOperationException("First payload should be hello");
 
-                var hello = helloData.Deserialize<HelloPayloadData>()!;
+                var hello = helloData.Deserialize(PayloadSerializerContext.Default.HelloPayloadData)!;
                 var heartbeatTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(hello.HeartbeatInterval));
                 cts.CancelAfter(hello.HeartbeatInterval * 2);
 
@@ -101,9 +101,10 @@ public class AlwaysOnService(
                             options.Value.Token,
                             new IdentifyProperties("Windows 10", "Google Chrome", "Windows"),
                             new Presence(
-                                JsonSerializer.Deserialize<JsonElement>(options.Value.Activities ?? "[]"),
+                                JsonSerializer.Deserialize(options.Value.Activities ?? "[]",
+                                    PayloadSerializerContext.Default.JsonElement),
                                 options.Value.Status, options.Value.Afk,
-                                0)))
+                                0)), PayloadSerializerContext.Default.IdentifyPayloadData)
                 }, token);
 
                 var heartbeatTask = heartbeatTimer.WaitForNextTickAsync(token).AsTask();
@@ -122,7 +123,8 @@ public class AlwaysOnService(
                                 break;
                             case { OpCode: OpCode.Dispatch, Event: "READY", Data: { } dispatchData }:
                             {
-                                var ready = dispatchData.Deserialize<ReadyPayloadData>()!;
+                                var ready = dispatchData.Deserialize(PayloadSerializerContext.Default
+                                    .ReadyPayloadData)!;
                                 logger.LogInformation(
                                     "Logged as {Username} ({UserId}) session id {SessionId}", ready.User.GlobalName,
                                     ready.User.Id, ready.SessionId);

@@ -2,11 +2,11 @@
   discord-always-on:
     image: discord-always-on
     build:
-      context: .
+      context: DiscordAlwaysOn
       dockerfile: Dockerfile
     restart: unless-stopped
     volumes:
-      - ./appsettings.json:/app/appsettings.json
+      - ./appsettings.Production.json:/app/appsettings.Production.json
 #    environment:
 #      - "AlwaysOn:TOKEN="
 #      - "AlwaysOn:Activities=[]"
