@@ -2,7 +2,7 @@
 
 namespace DiscordAlwaysOn.Payloads;
 
-public record ReadyPayloadData(
+public record Ready(
     [property: JsonPropertyName("user")] User User,
     [property: JsonPropertyName("session_id")]
-    string SessionId);
+    string SessionId) : IDispatchData;
