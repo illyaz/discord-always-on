@@ -119,7 +119,7 @@ public class AlwaysOnService(
                 if (await ReceiveAsync(token) is not HelloPayload { Data: { } hello })
                     throw new InvalidOperationException("First payload should be hello");
 
-                var heartbeatTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(hello.HeartbeatInterval));
+                using var heartbeatTimer = new PeriodicTimer(TimeSpan.FromMilliseconds(hello.HeartbeatInterval));
                 cts.CancelAfter(hello.HeartbeatInterval * 2);
 
                 logger.LogInformation("Logging in to Discord ...");
