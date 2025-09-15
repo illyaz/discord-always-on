@@ -99,7 +99,6 @@ public class AlwaysOnService(
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        GC.Collect();
         logger.LogInformation(
             "Configuration:\n\tToken: {Token}\n\tStatus: {Status}\n\tAfk: {Afk}\n\tActivities: {Activities}",
             $"{(options.Value.Token.Length >= 8 ? options.Value.Token[..8] : options.Value.Token)}...",
